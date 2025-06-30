@@ -1,4 +1,5 @@
 import requests
+from send_email1_copy import send_email
 
 api_key = 'ab5768aedd8340c99cec0f3c5e3fc7c5'
 
@@ -10,7 +11,10 @@ request = requests.get('https://newsapi.org/v2/everything?' \
 # Get a dictionary with data
 content = request.json()
 
-# Acess the article titles and description
-for i in content['articles']:
-    print(i['title'])
-    print(i['description'])
+# Acess the article titles and send them in an email
+email_body = ''
+for index, i in enumerate(content['articles']):
+    if i['title'] is not None:
+        email_body += f'{index + 1}. {i['title']}\n {i['description']}\n'
+
+send_email(message=email_body)
